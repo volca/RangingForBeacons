@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<Scheme version="1.3" LastUpgradeVersion="1100">
+	<AnalyzeAction buildConfiguration="Debug" />
+	<ArchiveAction buildConfiguration="Release" revealArchiveInOrganizer="YES" />
+	<TestAction selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" buildConfiguration="Debug" shouldUseLaunchSchemeArgsEnv="YES" codeCoverageEnabled="NO" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB">
+		<Testables />
+		<MacroExpansion>
+			<BuildableReference ReferencedContainer="container:Beacon Sample.xcodeproj" BlueprintName="Beacon Sample" BuildableIdentifier="primary" BuildableName="Beacon Sample.app" BlueprintIdentifier="7AAC02F622683AC200726A68" />
+		</MacroExpansion>
+	</TestAction>
+	<ProfileAction useCustomWorkingDirectory="NO" shouldUseLaunchSchemeArgsEnv="YES" buildConfiguration="Release" savedToolIdentifier="" debugDocumentVersioning="YES">
+		<BuildableProductRunnable runnableDebuggingMode="0">
+			<BuildableReference BuildableName="Beacon Sample.app" BlueprintIdentifier="7AAC02F622683AC200726A68" BlueprintName="Beacon Sample" ReferencedContainer="container:Beacon Sample.xcodeproj" BuildableIdentifier="primary" />
+		</BuildableProductRunnable>
+	</ProfileAction>
+	<BuildAction buildImplicitDependencies="YES" parallelizeBuildables="YES">
+		<BuildActionEntries>
+			<BuildActionEntry buildForTesting="YES" buildForAnalyzing="YES" buildForRunning="YES" buildForProfiling="YES" buildForArchiving="YES">
+				<BuildableReference BuildableName="Beacon Sample.app" BlueprintIdentifier="7AAC02F622683AC200726A68" BlueprintName="Beacon Sample" ReferencedContainer="container:Beacon Sample.xcodeproj" BuildableIdentifier="primary" />
+			</BuildActionEntry>
+		</BuildActionEntries>
+	</BuildAction>
+	<LaunchAction launchStyle="0" buildConfiguration="Debug" debugDocumentVersioning="YES" selectedLauncherIdentifier="Xcode.DebuggerFoundation.Launcher.LLDB" selectedDebuggerIdentifier="Xcode.DebuggerFoundation.Debugger.LLDB" useCustomWorkingDirectory="NO" debugServiceExtension="internal" ignoresPersistentStateOnLaunch="NO" allowLocationSimulation="YES">
+		<BuildableProductRunnable runnableDebuggingMode="0">
+			<BuildableReference BuildableIdentifier="primary" BuildableName="Beacon Sample.app" BlueprintIdentifier="7AAC02F622683AC200726A68" BlueprintName="Beacon Sample" ReferencedContainer="container:Beacon Sample.xcodeproj" />
+		</BuildableProductRunnable>
+	</LaunchAction>
+</Scheme>
