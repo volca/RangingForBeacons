@@ -18,7 +18,7 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
      for creating a beacon.
      */
     let defaultUUID = "E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"
-    
+
     /// This location manager is used to demonstrate how to range beacons.
     var locationManager = CLLocationManager()
     
@@ -91,7 +91,7 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     // MARK: - Location Manager Delegate
-
+    /// - Tag: didDetermineState
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
         let beaconRegion = region as? CLBeaconRegion
         if state == .inside {
@@ -103,6 +103,7 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
         }
     }
     
+    /// - Tag: didRange
     func locationManager(_ manager: CLLocationManager, didRange beacons: [CLBeacon], satisfying beaconConstraint: CLBeaconIdentityConstraint) {
         /*
          Beacons are categorized by proximity. A beacon can satisfy

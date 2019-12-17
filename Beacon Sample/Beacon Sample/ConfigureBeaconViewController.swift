@@ -53,6 +53,7 @@ class ConfigureBeaconViewController: UITableViewController, CBPeripheralManagerD
     }
     
     // Bluetooth must be enabled on the device for it to function as a beacon.
+    /// - Tag: configureBeaconRegion
     func configureBeaconRegion() {
         if peripheralManager.state == .poweredOn {
             peripheralManager.stopAdvertising()
