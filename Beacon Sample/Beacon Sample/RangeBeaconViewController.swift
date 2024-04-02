@@ -1,5 +1,5 @@
 /*
-See LICENSE folder for this sample’s licensing information.
+See the LICENSE.txt file for this sample’s licensing information.
 
 Abstract:
 View controller that illustrates how to start and stop ranging for a beacon region.

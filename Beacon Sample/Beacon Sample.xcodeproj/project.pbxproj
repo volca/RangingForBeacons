@@ -111,7 +111,7 @@
 				5B7B3AB6DB3A78BF67E1F551 /* LICENSE.txt */,
 			);
 			name = LICENSE;
-			path = ../LICENSE;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -336,7 +336,7 @@
 			baseConfigurationReference = 6A5AB8F9E807BFE7CFA575F1 /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(PROJECT_DIR)/$(PROJECT_NAME)/Supporting FIles/Info.plist";
@@ -358,7 +358,7 @@
 			baseConfigurationReference = 6A5AB8F9E807BFE7CFA575F1 /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(PROJECT_DIR)/$(PROJECT_NAME)/Supporting FIles/Info.plist";
