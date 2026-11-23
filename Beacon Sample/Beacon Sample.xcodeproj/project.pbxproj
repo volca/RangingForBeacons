@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7A33F664226D3B670030E497 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A33F663226D3B670030E497 /* CoreLocation.framework */; };
-		7A33F666226D3B6C0030E497 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A33F665226D3B6C0030E497 /* CoreBluetooth.framework */; };
-		7A36939A2280F1A300CDE534 /* ConfigureBeaconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A3693992280F1A300CDE534 /* ConfigureBeaconViewController.swift */; };
 		7AAC02FB22683AC200726A68 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC02FA22683AC200726A68 /* AppDelegate.swift */; };
+		7AAC030922683AC300726A68 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC030822683AC300726A68 /* SceneDelegate.swift */; };
 		7AAC02FD22683AC200726A68 /* RangeBeaconViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AAC02FC22683AC200726A68 /* RangeBeaconViewController.swift */; };
 		7AAC030022683AC200726A68 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7AAC02FE22683AC200726A68 /* Main.storyboard */; };
 		7AAC030222683AC300726A68 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7AAC030122683AC300726A68 /* Assets.xcassets */; };
@@ -19,13 +18,12 @@
 
 /* Begin PBXFileReference section */
 		05447D7005447C6000000001 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		5B7B3AB6DB3A78BF67E1F551 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
-		6A5AB8F9E807BFE7CFA575F1 /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = ../Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
+		5B7B3AB6DB3A78BF67E1F551 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
+		6A5AB8F9E807BFE7CFA575F1 /* SampleCode.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = SampleCode.xcconfig; path = ../Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		7A33F663226D3B670030E497 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		7A33F665226D3B6C0030E497 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
-		7A3693992280F1A300CDE534 /* ConfigureBeaconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigureBeaconViewController.swift; sourceTree = "<group>"; };
 		7AAC02F722683AC200726A68 /* Beacon Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Beacon Sample.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7AAC02FA22683AC200726A68 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7AAC030822683AC300726A68 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		7AAC02FC22683AC200726A68 /* RangeBeaconViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RangeBeaconViewController.swift; sourceTree = "<group>"; };
 		7AAC02FF22683AC200726A68 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		7AAC030122683AC300726A68 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -38,7 +36,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A33F666226D3B6C0030E497 /* CoreBluetooth.framework in Frameworks */,
 				7A33F664226D3B670030E497 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -71,8 +68,8 @@
 			children = (
 				7AD381912268441800C79DC4 /* Supporting FIles */,
 				7AAC02FA22683AC200726A68 /* AppDelegate.swift */,
+				7AAC030822683AC300726A68 /* SceneDelegate.swift */,
 				7AAC02FC22683AC200726A68 /* RangeBeaconViewController.swift */,
-				7A3693992280F1A300CDE534 /* ConfigureBeaconViewController.swift */,
 			);
 			path = "Beacon Sample";
 			sourceTree = "<group>";
@@ -80,7 +77,6 @@
 		7AD3818D22683FFE00C79DC4 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7A33F665226D3B6C0030E497 /* CoreBluetooth.framework */,
 				7A33F663226D3B670030E497 /* CoreLocation.framework */,
 			);
 			name = Frameworks;
@@ -187,7 +183,7 @@
 			files = (
 				7AAC02FD22683AC200726A68 /* RangeBeaconViewController.swift in Sources */,
 				7AAC02FB22683AC200726A68 /* AppDelegate.swift in Sources */,
-				7A36939A2280F1A300CDE534 /* ConfigureBeaconViewController.swift in Sources */,
+				7AAC030922683AC300726A68 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -265,7 +261,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -321,7 +317,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -338,13 +334,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B394B8PA37;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/$(PROJECT_NAME)/Supporting FIles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BeaconSample${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.volcano.apple-samplecode.BeaconSample--SAMPLE-CODE-DISAMBIGUATOR-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -360,13 +356,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = B394B8PA37;
 				INFOPLIST_FILE = "$(PROJECT_DIR)/$(PROJECT_NAME)/Supporting FIles/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.BeaconSample${SAMPLE_CODE_DISAMBIGUATOR}";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.volcano.apple-samplecode.BeaconSample--SAMPLE-CODE-DISAMBIGUATOR-";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
