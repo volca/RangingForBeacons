@@ -50,7 +50,7 @@ While one or more beacons are in range, the [`locationManager(_ manager: CLLocat
 
 ## Range While the Device Is Locked
 
-The app requests "always" authorization and declares the `location` background mode, so region monitoring keeps running while the device is locked or the app is in the background. The [`didEnterRegion`](x-source-tag://didEnterRegion) and [`didExitRegion`](x-source-tag://didExitRegion) delegate methods post a local notification, which appears on the lock screen.
+The app requests "always" authorization and declares the `location` background mode, so region monitoring keeps running while the device is locked or the app is in the background. The first time each UUID is detected, the app posts a local notification titled `UUID1 detected` or `UUID2 detected`, which appears on the lock screen and as a banner while the app is open.
 
 Ranging itself, however, only delivers updates while the app is running in the foreground. When the app becomes active it asks for the state of every monitored region and starts ranging again for the regions the device is inside, so the table view repopulates as soon as the device is unlocked.
 

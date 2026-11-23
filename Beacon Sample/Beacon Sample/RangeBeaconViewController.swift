@@ -9,8 +9,12 @@ including while the device is locked or the app is in the background.
 import UIKit
 import CoreLocation
 import UserNotifications
+import os
 
-class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate {
+private let beaconLog = Logger(subsystem: "com.example.apple-samplecode.BeaconSample",
+                               category: "Ranging")
+
+class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, CLLocationManagerDelegate, UNUserNotificationCenterDelegate {
 
     @IBOutlet weak var tableView: UITableView!
 
@@ -37,6 +41,15 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
     /// The most recent ranging result for each constraint.
     private var beacons = [CLBeaconIdentityConstraint: [CLBeacon]]()
 
+    /// Regions the device is currently inside, so each detection notifies once.
+    private var detectedRegionIdentifiers = Set<String>()
+
+    /// Consecutive ranging reports with no beacon, per constraint.
+    private var emptyRangeReportCounts = [CLBeaconIdentityConstraint: Int]()
+
+    /// Consecutive ranging reports with at least one beacon, per constraint.
+    private var beaconReportCounts = [CLBeaconIdentityConstraint: Int]()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -48,6 +61,7 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
         */
         locationManager.requestAlwaysAuthorization()
 
+        UNUserNotificationCenter.current().delegate = self
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
 
         NotificationCenter.default.addObserver(self,
@@ -73,12 +87,16 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
 
         constraints.append(constraint)
         beacons[constraint] = []
+        emptyRangeReportCounts[constraint] = 0
+        beaconReportCounts[constraint] = 0
 
         /*
         By monitoring for the beacon before ranging, the app is more
         energy efficient if the beacon is not immediately observable.
         Monitoring also continues while the device is locked.
         */
+        beaconLog.notice("monitoring uuid=\(uuid.uuidString, privacy: .public) major=\(self.beaconMajor) minor=\(self.beaconMinor)")
+
         let beaconRegion = CLBeaconRegion(beaconIdentityConstraint: constraint, identifier: uuid.uuidString)
         locationManager.startMonitoring(for: beaconRegion)
         locationManager.requestState(for: beaconRegion)
@@ -151,32 +169,56 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
 
     /// - Tag: didDetermineState
     func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        beaconLog.notice("state=\(self.stateName(state), privacy: .public) region=\(region.identifier, privacy: .public)")
+
         guard let beaconRegion = region as? CLBeaconRegion else { return }
 
         if state == .inside {
             // Start ranging when inside a region.
             manager.startRangingBeacons(satisfying: beaconRegion.beaconIdentityConstraint)
-        } else {
-            // Stop ranging when not inside a region.
+        } else if state == .outside {
+            /*
+            Only an explicit outside clears the detection. The unknown state
+            that follows a launch carries no information about the beacon, and
+            inside can be a cached value reported before the first scan, so
+            neither notifies; a notification requires a real advertisement
+            (ranging) or a region entry.
+            */
             manager.stopRangingBeacons(satisfying: beaconRegion.beaconIdentityConstraint)
+            detectedRegionIdentifiers.remove(region.identifier)
+        }
+    }
+
+    private func stateName(_ state: CLRegionState) -> String {
+        switch state {
+        case .inside:
+            return "inside"
+        case .outside:
+            return "outside"
+        default:
+            return "unknown"
         }
     }
 
     /// - Tag: didEnterRegion
     func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        beaconLog.notice("didEnterRegion region=\(region.identifier, privacy: .public)")
         /*
         This callback is delivered while the device is locked or the app is in
         the background, so surface it with a local notification.
         */
-        postNotification(for: region, entered: true)
+        notifyDetection(for: region.identifier)
     }
 
     /// - Tag: didExitRegion
     func locationManager(_ manager: CLLocationManager, didExitRegion region: CLRegion) {
-        postNotification(for: region, entered: false)
+        beaconLog.notice("didExitRegion region=\(region.identifier, privacy: .public)")
+        detectedRegionIdentifiers.remove(region.identifier)
 
         guard let beaconRegion = region as? CLBeaconRegion else { return }
         beacons[beaconRegion.beaconIdentityConstraint] = []
+        emptyRangeReportCounts[beaconRegion.beaconIdentityConstraint] = 0
+        beaconReportCounts[beaconRegion.beaconIdentityConstraint] = 0
         tableView.reloadData()
     }
 
@@ -184,22 +226,76 @@ class RangeBeaconViewController: UIViewController, UITableViewDelegate, UITableV
     func locationManager(_ manager: CLLocationManager, didRange beacons: [CLBeacon], satisfying beaconConstraint: CLBeaconIdentityConstraint) {
         // A beacon can satisfy multiple constraints, so key results by constraint.
         self.beacons[beaconConstraint] = beacons
+
+        for beacon in beacons {
+            beaconLog.notice("didRange uuid=\(beacon.uuid.uuidString, privacy: .public) major=\(beacon.major.intValue) minor=\(beacon.minor.intValue) rssi=\(beacon.rssi) proximity=\(String(describing: beacon.proximity), privacy: .public)")
+        }
+
+        /*
+        While the app is in the foreground, a beacon that disappears from
+        ranging is treated as gone without waiting for the region exit, so
+        toggling a beacon off and on notifies again. Two empty reports in a
+        row are required to ignore a single dropped scan.
+        */
+        if beacons.isEmpty {
+            beaconReportCounts[beaconConstraint] = 0
+
+            let count = (emptyRangeReportCounts[beaconConstraint] ?? 0) + 1
+            emptyRangeReportCounts[beaconConstraint] = count
+            if count >= 3 {
+                detectedRegionIdentifiers.remove(beaconConstraint.uuid.uuidString)
+            }
+        } else {
+            emptyRangeReportCounts[beaconConstraint] = 0
+
+            /*
+            A single report can be a stray packet from a beacon that is
+            switching identity, so require two sightings in a row.
+            */
+            let count = (beaconReportCounts[beaconConstraint] ?? 0) + 1
+            beaconReportCounts[beaconConstraint] = count
+            if count >= 2 {
+                notifyDetection(for: beaconConstraint.uuid.uuidString)
+            }
+        }
+
         tableView.reloadData()
     }
 
-    private func postNotification(for region: CLRegion, entered: Bool) {
-        // The table view already shows the result while the app is on screen.
-        guard UIApplication.shared.applicationState != .active else { return }
+    /// Posts one notification the first time each UUID is detected.
+    private func notifyDetection(for identifier: String) {
+        guard detectedRegionIdentifiers.insert(identifier).inserted else { return }
 
         let content = UNMutableNotificationContent()
-        content.title = entered ? "Beacon Region Entered" : "Beacon Region Exited"
-        content.body = region.identifier
+        content.title = "\(uuidLabel(for: identifier)) detected"
+        content.body = identifier
         content.sound = .default
 
-        let request = UNNotificationRequest(identifier: UUID().uuidString,
+        beaconLog.notice("notify \(self.uuidLabel(for: identifier), privacy: .public) for \(identifier, privacy: .public)")
+
+        let request = UNNotificationRequest(identifier: identifier + "-" + UUID().uuidString,
                                            content: content,
                                            trigger: nil)
         UNUserNotificationCenter.current().add(request)
+    }
+
+    /// Names the default UUIDs "UUID1" and "UUID2"; any added UUID keeps its string.
+    private func uuidLabel(for identifier: String) -> String {
+        if let index = defaultUUIDStrings.firstIndex(where: {
+            $0.caseInsensitiveCompare(identifier) == .orderedSame
+        }) {
+            return "UUID\(index + 1)"
+        }
+        return identifier
+    }
+
+    // MARK: - UNUserNotificationCenterDelegate
+
+    /// Shows the banner even while the app is in the foreground.
+    func userNotificationCenter(_ center: UNUserNotificationCenter,
+                                willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler([.banner, .sound])
     }
 
     // MARK: - Table View Data Source
